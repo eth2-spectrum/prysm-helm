@@ -18,9 +18,18 @@ spec:
       labels:
         {{- include "beacon-node.selectorLabels" . | nindent 8 }}
     spec:
+      volumes:
+      - name: node-data
+        persistentVolumeClaim:
+          claimName: {{ include "beacon-node-data.fullname" . }}
+      - name: configfile
+        configMap:
+          name: {{ include "beacon-node.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.beaconNode.image.repository }}:{{ .Values.beaconNode.image.tag }}
+          args:
+            - "--config-file={{ .Values.beaconNode.nodeConfigDir }}/{{ .Values.beaconNode.nodeConfigName }}"
           imagePullPolicy: {{ .Values.beaconNode.image.pullPolicy }}
           ports:
             - containerPort: 13000
@@ -33,6 +42,12 @@ spec:
             - name: metrics
               containerPort: {{ .Values.beaconNode.metricsPort }}
               protocol: TCP
+          volumeMounts:
+          - name: node-data
+            mountPath: "/data"
+          - name: configfile
+            mountPath: {{ .Values.beaconNode.nodeConfigDir }}
+            readOnly: true
 {{/*          livenessProbe:*/}}
 {{/*            httpGet:*/}}
 {{/*              path: /metrics*/}}

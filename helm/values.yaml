@@ -10,6 +10,8 @@ beaconNode:
     pullPolicy: Always
     tag: "latest-arm64"
   metricsPort: 8080
+  nodeConfigDir: "/config"
+  nodeConfigName: "beacon.yaml"
 
 nameOverride: ""
 fullnameOverride: ""
