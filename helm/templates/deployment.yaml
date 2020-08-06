@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "medalla-prysm.fullname" . }}
+  name: {{ include "beacon-node.fullname" . }}
   labels:
-    {{- include "medalla-prysm.labels" . | nindent 4 }}
+    {{- include "beacon-node.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "medalla-prysm.selectorLabels" . | nindent 6 }}
+      {{- include "beacon-node.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -16,18 +16,16 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "medalla-prysm.selectorLabels" . | nindent 8 }}
+        {{- include "beacon-node.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.beaconNode.image }}:{{ .Values.beaconNode.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.beaconNode.image.repository }}:{{ .Values.beaconNode.image.tag }}
+          imagePullPolicy: {{ .Values.beaconNode.image.pullPolicy }}
           ports:
-            - name: chainPort0
-              containerPort: 13000
+            - containerPort: 13000
               protocol: TCP
-            - name: chainPort1
-              containerPort: 12000
+            - containerPort: 12000
               protocol: UDP
             - name: grpc
               containerPort: 4000
@@ -35,11 +33,11 @@ spec:
             - name: metrics
               containerPort: {{ .Values.beaconNode.metricsPort }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
-          readinessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
+{{/*          livenessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /metrics*/}}
+{{/*              port: metrics*/}}
+{{/*          readinessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /metrics*/}}
+{{/*              port: metrics*/}}

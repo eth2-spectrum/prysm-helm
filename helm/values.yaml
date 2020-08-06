@@ -5,16 +5,11 @@
 replicaCount: 1
 
 beaconNode:
-  image: "prysmaticlabs/prysm-beacon-chain"
-  tag: "latest"
+  image:
+    repository: "jbarthel/beacon-chain"
+    pullPolicy: Always
+    tag: "latest-arm64"
   metricsPort: 8080
-
-
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
 nameOverride: ""
 fullnameOverride: ""
