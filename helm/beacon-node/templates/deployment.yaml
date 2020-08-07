@@ -19,9 +19,7 @@ spec:
         {{- include "beacon-node.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
-        runAsUser: 101
-        runAsGroup: 101
-        fsGroup: 101
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
       - name: node-data
         persistentVolumeClaim:
