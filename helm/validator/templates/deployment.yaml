@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "validator.fullname" . }}
+  labels:
+  {{- include "validator.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "validator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+    {{- include "validator.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+        - name: wallet-password
+          secret:
+            secretName: {{ include "validator.fullname" . }}
+        - name: wallet-accounts
+          configMap:
+            name: {{ include "validator.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          args:
+            - "validator"
+            - "--beacon-rpc-provider={{ .Values.beaconNode }}:4000"
+            - "--wallet-dir=/wallet"
+            - "--wallet-password-file=/wallet/wallet-password"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: wallet-accounts
+              mountPath: "/wallet/direct/keymanageropts.json"
+              subPath: "keymanageropts.json"
+            - name: wallet-accounts
+              mountPath: "/wallet/direct/accounts/all-accounts.keystore.json"
+              subPath: "all-accounts.keystore.json"
+            - name: wallet-password
+              mountPath: "/wallet/wallet-password"
+              subPath: "wallet-password"
+  {{/*          livenessProbe:*/}}
+  {{/*            httpGet:*/}}
+  {{/*              path: /metrics*/}}
+  {{/*              port: metrics*/}}
+  {{/*          readinessProbe:*/}}
+  {{/*            httpGet:*/}}
+  {{/*              path: /metrics*/}}
+  {{/*              port: metrics*/}}

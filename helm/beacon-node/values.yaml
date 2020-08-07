@@ -19,4 +19,4 @@ podSecurityContext:
 
 podAnnotations: {}
 
-serviceType: LoadBalancer
+serviceType: ClusterIP

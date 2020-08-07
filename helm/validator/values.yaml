@@ -1,20 +1,19 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  repository: "jbarthel/prysm-node"
+  pullPolicy: Always
+  tag: "latest-arm64"
+
+metricsPort: 8080
+configDir: "/config"
+configName: "validator.yaml"
+
 
 podAnnotations: {}
 
 nameOverride: ""
 fullnameOverride: ""
-
-podSecurityContext:
-  runAsUser: 101
-  runAsGroup: 101
-  fsGroup: 101
 
 nodeSelector: {}
 
@@ -23,3 +22,5 @@ hostKeystoreLocation: ""
 walletDirectory: "/wallet"
 
 walletPassword: "<pass-as-parameter>"
+
+beaconNode: medalla-prysm-beacon-node-grcp

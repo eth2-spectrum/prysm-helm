@@ -33,6 +33,7 @@ spec:
           args:
             - "beacon-chain"
             - "--config-file={{ .Values.beaconNode.nodeConfigDir }}/{{ .Values.beaconNode.nodeConfigName }}"
+            - "--rpc-host=0.0.0.0"
           imagePullPolicy: {{ .Values.beaconNode.image.pullPolicy }}
           ports:
             - containerPort: 13000

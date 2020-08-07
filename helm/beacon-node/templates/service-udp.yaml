@@ -10,6 +10,7 @@ spec:
     - port: 12000
       targetPort: 12000
       protocol: UDP
+      name: udp
   selector:
     app.kubernetes.io/name: {{ include "beacon-node.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
