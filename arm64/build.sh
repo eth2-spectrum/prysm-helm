@@ -2,7 +2,7 @@
 
 DOCKER_CLI_EXPERIMENTAL=enabled docker \
   buildx build --platform linux/arm64 \
-  -t jbarthel/prysm-beacon-chain:latest-arm64 \
-  -f beaconchain.Dockerfile \
+  -t jbarthel/prysm-node:latest-arm64 \
+  -f Dockerfile \
   --push \
   .
