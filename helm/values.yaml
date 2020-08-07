@@ -17,3 +17,5 @@ nameOverride: ""
 fullnameOverride: ""
 
 podAnnotations: {}
+
+serviceType: LoadBalancer

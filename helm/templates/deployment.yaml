@@ -21,7 +21,7 @@ spec:
       volumes:
       - name: node-data
         persistentVolumeClaim:
-          claimName: {{ include "beacon-node-data.fullname" . }}
+          claimName: {{ include "beacon-node.fullname" . }}
       - name: configfile
         configMap:
           name: {{ include "beacon-node.fullname" . }}
