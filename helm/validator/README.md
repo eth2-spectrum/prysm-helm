@@ -1,7 +1,8 @@
-Prysm v2 keystore must reside in
+Prysm v2 keystore must reside in 
 ```
 config/wallet/all-accounts.keystore.json
 ```
+Create folder if not present.
 
 Pass wallet password value override to the helm deployment.
 
