@@ -1,5 +1,4 @@
 FROM debian:stable-slim
-ARG PROCESS_NAME
 
 WORKDIR /prysm
 RUN apt update
