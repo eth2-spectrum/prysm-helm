@@ -6,7 +6,7 @@ replicaCount: 1
 
 beaconNode:
   image:
-    repository: "jbarthel/beacon-chain"
+    repository: "jbarthel/prysm-node"
     pullPolicy: Always
     tag: "latest-arm64"
   metricsPort: 8080

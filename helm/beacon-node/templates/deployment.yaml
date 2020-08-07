@@ -18,6 +18,10 @@ spec:
       labels:
         {{- include "beacon-node.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
       volumes:
       - name: node-data
         persistentVolumeClaim:
@@ -29,6 +33,7 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.beaconNode.image.repository }}:{{ .Values.beaconNode.image.tag }}
           args:
+            - "beacon-chain"
             - "--config-file={{ .Values.beaconNode.nodeConfigDir }}/{{ .Values.beaconNode.nodeConfigName }}"
           imagePullPolicy: {{ .Values.beaconNode.image.pullPolicy }}
           ports:
