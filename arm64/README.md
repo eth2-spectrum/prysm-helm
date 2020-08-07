@@ -1,5 +1,5 @@
 Needs to be built for linux/arm64v8 when deploying to a raspberry pi.
-Experimental features must be enabled to be able to perform this build.
+Experimental features (docker ce >=19.03) must be enabled to be able to perform this build.
 
 The following packages must be installed as well
 ```shell script
