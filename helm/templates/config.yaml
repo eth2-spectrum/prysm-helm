@@ -6,4 +6,4 @@ metadata:
   {{- include "beacon-node.labels" . | nindent 4 }}
 data:
   beacon.yaml: |-
-    {{ .Files.Get "config/beacon.yaml" | indent 4 }}
+{{ .Files.Get "config/beacon.yaml" | indent 4 }}
