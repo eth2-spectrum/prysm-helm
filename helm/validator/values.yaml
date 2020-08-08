@@ -1,26 +1,25 @@
-replicaCount: 1
-
-image:
-  repository: "jbarthel/prysm-node"
-  pullPolicy: Always
-  tag: "latest-arm64"
-
-metricsPort: 8080
-configDir: "/config"
-configName: "validator.yaml"
-
-
-podAnnotations: {}
-
 nameOverride: ""
 fullnameOverride: ""
 
-nodeSelector: {}
+deployment:
+  replicaCount: 1
+  image:
+    repository: "jbarthel/prysm-node"
+    pullPolicy: Always
+    tag: "latest-arm64"
 
-hostKeystoreLocation: ""
+  configDir: "/config"
+  configName: "validator.yaml"
 
-walletDirectory: "/wallet"
+  beaconNode: medalla-prysm-beacon-node-grcp
 
-walletPassword: "<pass-as-parameter>"
+ports:
+  metrics: 8080
 
-beaconNode: medalla-prysm-beacon-node-grcp
+wallet:
+  keymanagerOptsFileName: "keymanageropts.json"
+  accountsFilename: "all-accounts.keystore.json"
+  walletDirectory: "/wallet"
+  walletPassword: "<pass-as-parameter>"
+  walletPasswordPath: "/wallet/wallet-password"
+  walletSecretSubPath: "wallet-password"
