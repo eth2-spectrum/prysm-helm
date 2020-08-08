@@ -8,6 +8,7 @@ deployment:
     pullPolicy: Always
     tag: "latest-arm64"
 
+  healthEndpoint: "/healthz"
   configDir: "/config"
   configName: "validator.yaml"
 

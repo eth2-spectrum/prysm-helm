@@ -30,6 +30,7 @@ spec:
             - "--wallet-dir={{ .Values.wallet.walletDirectory }}"
             - "--wallet-password-file={{ .Values.wallet.walletPasswordPath }}"
             - "--monitoring-host=0.0.0.0"
+            - "--monitoring-port={{ .Values.ports.metrics }}"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           volumeMounts:
             - name: wallet-accounts
@@ -41,11 +42,11 @@ spec:
             - name: wallet-password
               mountPath: {{ .Values.wallet.walletPasswordPath }}
               subPath: {{ .Values.wallet.walletSecretSubPath}}
-  {{/*          livenessProbe:*/}}
-  {{/*            httpGet:*/}}
-  {{/*              path: /metrics*/}}
-  {{/*              port: metrics*/}}
-  {{/*          readinessProbe:*/}}
-  {{/*            httpGet:*/}}
-  {{/*              path: /metrics*/}}
-  {{/*              port: metrics*/}}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployment.healthEndpoint }}
+              port: {{ .Values.ports.metrics }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.deployment.healthEndpoint }}
+              port: {{ .Values.ports.metrics }}
