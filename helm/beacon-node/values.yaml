@@ -1,22 +1,27 @@
-replicaCount: 1
+nameOverride: ""
+fullnameOverride: ""
 
-beaconNode:
+deployment:
+  podAnnotations: {}
+  replicaCount: 1
+
+  podSecurityContext:
+    runAsUser: 101
+    runAsGroup: 101
+    fsGroup: 101
+
   image:
     repository: "jbarthel/prysm-node"
     pullPolicy: Always
     tag: "latest-arm64"
-  metricsPort: 8080
   nodeConfigDir: "/config"
   nodeConfigName: "beacon.yaml"
+  dataDir: "/data"
 
-nameOverride: ""
-fullnameOverride: ""
-
-podSecurityContext:
-  runAsUser: 101
-  runAsGroup: 101
-  fsGroup: 101
-
-podAnnotations: {}
+ports:
+  p2pTcp: 13000
+  p2pUdp: 12000
+  grpc: 4000
+  metrics: 8080
 
 serviceType: ClusterIP

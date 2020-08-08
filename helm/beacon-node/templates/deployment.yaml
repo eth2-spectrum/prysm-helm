@@ -5,13 +5,13 @@ metadata:
   labels:
     {{- include "beacon-node.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.deployment.replicaCount }}
   selector:
     matchLabels:
       {{- include "beacon-node.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+    {{- with .Values.deployment.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -19,7 +19,7 @@ spec:
         {{- include "beacon-node.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
       volumes:
       - name: node-data
         persistentVolumeClaim:
@@ -29,28 +29,27 @@ spec:
           name: {{ include "beacon-node.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.beaconNode.image.repository }}:{{ .Values.beaconNode.image.tag }}
+          image: {{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}
           args:
             - "beacon-chain"
-            - "--config-file={{ .Values.beaconNode.nodeConfigDir }}/{{ .Values.beaconNode.nodeConfigName }}"
-            - "--rpc-host=0.0.0.0"
-          imagePullPolicy: {{ .Values.beaconNode.image.pullPolicy }}
+            - "--config-file={{ .Values.deployment.nodeConfigDir }}/{{ .Values.deployment.nodeConfigName }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
-            - containerPort: 13000
+            - containerPort: {{ .Values.ports.p2pTcp }}
               protocol: TCP
-            - containerPort: 12000
+            - containerPort: {{ .Values.ports.p2pUdp }}
               protocol: UDP
             - name: grpc
-              containerPort: 4000
+              containerPort: {{ .Values.ports.grpc }}
               protocol: TCP
             - name: metrics
-              containerPort: {{ .Values.beaconNode.metricsPort }}
+              containerPort: {{ .Values.ports.metrics }}
               protocol: TCP
           volumeMounts:
           - name: node-data
-            mountPath: "/data"
+            mountPath: {{ .Values.deployment.dataDir }}
           - name: configfile
-            mountPath: {{ .Values.beaconNode.nodeConfigDir }}
+            mountPath: {{ .Values.deployment.nodeConfigDir }}
             readOnly: true
 {{/*          livenessProbe:*/}}
 {{/*            httpGet:*/}}
