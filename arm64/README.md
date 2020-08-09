@@ -13,7 +13,8 @@ DOCKER_CLI_EXPERIMENTAL=enabled docker buildx use builder
 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx inspect --bootstrap builder
 ```
 
-The following command builds and pushes the image. Please note that the target repository is hardcoded right now. Adjust according to your docker registry.
+The following command builds and pushes the prysm image. Please note that the target repository is hardcoded right now. Adjust according to your docker registry.
 ```shell script
-./build.sh
+./build_prysm.sh
 ```
+
