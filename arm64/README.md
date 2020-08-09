@@ -13,8 +13,15 @@ DOCKER_CLI_EXPERIMENTAL=enabled docker buildx use builder
 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx inspect --bootstrap builder
 ```
 
-The following command builds and pushes the prysm image. Please note that the target repository is hardcoded right now. Adjust according to your docker registry.
+The following command builds and pushes an arm64 wrapper of the prysm.sh script.
+Please note that the target repository is hardcoded right now. Adjust according to your docker registry.
 ```shell script
+cd prysm
 ./build_prysm.sh
 ```
 
+The following command build an arm64 image of the v.1.19.18 go ethereum client.
+```shell script
+cd ethnode
+./build_ethnode.sh
+```
