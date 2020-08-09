@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "monitoring.fullname" . }}-grafana
+  labels: {{- include "monitoring.grafanaLabels" . | nindent 4 }}
+spec:
+  rules:
+    - http:
+        paths:
+          - path: {{ .Values.grafana.ingress.urlPath }}
+            backend:
+              serviceName: {{ include "monitoring.fullname" . }}-grafana
+              servicePort: 3000

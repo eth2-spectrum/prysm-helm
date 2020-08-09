@@ -27,9 +27,14 @@ grafana:
   persistentStorageSize: 1Gi
   listenPort: 3000
   deployment:
+    podSecurityContext:
+      runAsUser: 472
+      runAsGroup: 472
+      fsGroup: 472
     replicaCount: 1
     image:
-      repository: grafana/grafana:latest
+      repository: grafana/grafana
+      tag: latest
       pullPolicy: Always
     dataPath: "/var/lib/grafana"
     datasourcesPath: "/etc/grafana/provisioning/datasources"
@@ -39,7 +44,7 @@ grafana:
     dashboardFile: "less_10_validators.json"
 
   ingress:
-    {}
+    urlPath: "/"
 
 ports:
   metrics: 8080
