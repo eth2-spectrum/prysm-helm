@@ -3,6 +3,7 @@ fullnameOverride: ""
 
 prometheus:
   validatorMetricsUrl: prysm-validator-metrics
+  beaconNodeMetricsUrl: medalla-prysm-beacon-node-metrics
   defaultMetricsPort: 8080
   persistentStorageSize: 5Gi
   listenPort: 9090

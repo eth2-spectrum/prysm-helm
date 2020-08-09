@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "beacon-node.fullname" . }}-stats
+  labels:
+  {{- include "beacon-node.statsLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.stats.deployment.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "beacon-node.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "beacon-node.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+      - name: stats-data
+        persistentVolumeClaim:
+          claimName: {{ include "beacon-node.fullname" . }}-stats
+      containers:
+      - name: {{ include "beacon-node.fullname" . }}-stats
+        image: {{ .Values.stats.deployment.image.repository }}:{{ .Values.stats.deployment.image.tag }}
+        imagePullPolicy: {{ .Values.stats.deployment.image.pullPolicy }}
+        args:
+          - "run"
+          - "--eth2stats.node-name={{ .Values.stats.deployment.nodeName }}"
+          - "--data.folder={{ .Values.stats.deployment.dataPath }}"
+          - "--eth2stats.addr={{ .Values.stats.deployment.eth2StatsAddr }}"
+          - "--eth2stats.tls={{ .Values.stats.deployment.eth2StatsTLS }}"
+          - "--beacon.type={{ .Values.stats.deployment.beaconType }}"
+          - "--beacon.addr={{ include "beacon-node.fullname" . }}-grcp:{{ .Values.ports.grpc }}"
+          - "--beacon.metrics-addr=http://{{ include "beacon-node.fullname" . }}-metrics:{{ .Values.ports.metrics }}/metrics"
+        volumeMounts:
+        - mountPath: {{ .Values.stats.deployment.dataPath }}
+          name: stats-data

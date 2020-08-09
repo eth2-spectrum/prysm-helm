@@ -18,3 +18,6 @@ data:
       - job_name: 'validator'
         static_configs:
           - targets: ["{{ .Values.prometheus.validatorMetricsUrl }}:{{ .Values.prometheus.defaultMetricsPort }}"]
+      - job_name: 'beacon node'
+        static_configs:
+          - targets: ["{{ .Values.prometheus.beaconNodeMetricsUrl }}:{{ .Values.prometheus.defaultMetricsPort }}"]

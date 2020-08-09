@@ -5,21 +5,17 @@ metadata:
   labels:
     {{- include "beacon-node.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.deployment.replicaCount }}
+  replicas: {{ .Values.beaconNode.deployment.replicaCount }}
   selector:
     matchLabels:
       {{- include "beacon-node.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.deployment.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
       labels:
         {{- include "beacon-node.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
-        {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.beaconNode.deployment.podSecurityContext | nindent 8 }}
       volumes:
       - name: node-data
         persistentVolumeClaim:
@@ -29,11 +25,11 @@ spec:
           name: {{ include "beacon-node.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}
+          image: {{ .Values.beaconNode.deployment.image.repository }}:{{ .Values.beaconNode.deployment.image.tag }}
           args:
             - "beacon-chain"
-            - "--config-file={{ .Values.deployment.nodeConfigDir }}/{{ .Values.deployment.nodeConfigName }}"
-          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+            - "--config-file={{ .Values.beaconNode.deployment.nodeConfigDir }}/{{ .Values.beaconNode.deployment.nodeConfigName }}"
+          imagePullPolicy: {{ .Values.beaconNode.deployment.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.ports.p2pTcp }}
               protocol: TCP
@@ -47,9 +43,9 @@ spec:
               protocol: TCP
           volumeMounts:
           - name: node-data
-            mountPath: {{ .Values.deployment.dataDir }}
+            mountPath: {{ .Values.beaconNode.deployment.dataDir }}
           - name: configfile
-            mountPath: {{ .Values.deployment.nodeConfigDir }}
+            mountPath: {{ .Values.beaconNode.deployment.nodeConfigDir }}
             readOnly: true
 {{/*          livenessProbe:*/}}
 {{/*            httpGet:*/}}

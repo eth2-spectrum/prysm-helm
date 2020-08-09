@@ -1,22 +1,36 @@
 nameOverride: ""
 fullnameOverride: ""
 
-deployment:
-  podAnnotations: {}
-  replicaCount: 1
+beaconNode:
+  deployment:
+    replicaCount: 1
+    podSecurityContext:
+      runAsUser: 101
+      runAsGroup: 101
+      fsGroup: 101
+    image:
+      repository: "jbarthel/prysm-node"
+      pullPolicy: Always
+      tag: "latest-arm64"
+    nodeConfigDir: "/config"
+    nodeConfigName: "beacon.yaml"
+    dataDir: "/data"
 
-  podSecurityContext:
-    runAsUser: 101
-    runAsGroup: 101
-    fsGroup: 101
-
-  image:
-    repository: "jbarthel/prysm-node"
-    pullPolicy: Always
-    tag: "latest-arm64"
-  nodeConfigDir: "/config"
-  nodeConfigName: "beacon.yaml"
-  dataDir: "/data"
+stats:
+  deployment:
+    replicaCount: 1
+    image:
+      repository: "alethio/eth2stats-client"
+      pullPolicy: Always
+      tag: "latest"
+    eth2StatsAddr: "grpc.medalla.eth2stats.io:443"
+    eth2StatsTLS: "true"
+    name: "stats-node"
+    beaconType: "prysm"
+    nodeName: "withte.eth"
+    dataPath: "/data"
+  persistentVolume:
+    size: 5Gi
 
 ports:
   p2pTcp: 13000
@@ -24,4 +38,5 @@ ports:
   grpc: 4000
   metrics: 8080
 
+storageClassName: microk8s-hostpath
 serviceType: ClusterIP
