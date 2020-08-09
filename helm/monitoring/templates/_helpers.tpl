@@ -30,9 +30,6 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Prometheus labels
-*/}}
 {{- define "monitoring.prometheusLabels" -}}
 helm.sh/chart: {{ include "monitoring.chart" . }}
 {{ include "monitoring.prometheusSelectorLabels" . }}
@@ -42,9 +39,15 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-{{/*
-Common labels
-*/}}
+{{- define "monitoring.grafanaLabels" -}}
+helm.sh/chart: {{ include "monitoring.chart" . }}
+{{ include "monitoring.grafanaSelectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
 {{- define "monitoring.labels" -}}
 helm.sh/chart: {{ include "monitoring.chart" . }}
 {{ include "monitoring.selectorLabels" . }}
@@ -54,18 +57,17 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
 {{- define "monitoring.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "monitoring.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Selector labels for prometheus node
-*/}}
 {{- define "monitoring.prometheusSelectorLabels" -}}
 serviceRole: prometheus
+{{ include "monitoring.selectorLabels" . }}
+{{- end -}}
+
+{{- define "monitoring.grafanaSelectorLabels" -}}
+serviceRole: grafana
 {{ include "monitoring.selectorLabels" . }}
 {{- end -}}

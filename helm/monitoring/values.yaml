@@ -23,6 +23,24 @@ prometheus:
     healthEndpoint: "/healthz"
     beaconNode: medalla-prysm-beacon-node-grcp
 
+grafana:
+  persistentStorageSize: 1Gi
+  listenPort: 3000
+  deployment:
+    replicaCount: 1
+    image:
+      repository: grafana/grafana:latest
+      pullPolicy: Always
+    dataPath: "/var/lib/grafana"
+    datasourcesPath: "/etc/grafana/provisioning/datasources"
+    dashboardProvidersPath: "/etc/grafana/provisioning/dashboards"
+    dashboardsPath: "/var/lib/grafana/dashboards"
+    dashboardBaseURL: "https://raw.githubusercontent.com/GuillaumeMiralles/prysm-grafana-dashboard/master/"
+    dashboardFile: "less_10_validators.json"
+
+  ingress:
+    {}
+
 ports:
   metrics: 8080
 

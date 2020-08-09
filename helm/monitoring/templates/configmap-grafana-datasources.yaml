@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "monitoring.fullname" . }}-grafana-datasources
+  labels:
+    {{- include "monitoring.grafanaLabels" . | nindent 4 }}
+data:
+  prometheus.yml: |-
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: "http://{{ include "monitoring.fullname" . }}-prometheus:{{ .Values.prometheus.listenPort }}"
