@@ -19,6 +19,6 @@ RUN addgroup -S app && adduser -S app -G app \
 COPY --chown=app:app --from=build /go/bin/${PROCESSNAME} /app/${PROCESSNAME}
 WORKDIR /app
 RUN  echo "#!/usr/bin/env sh"  > run.sh \
-    && echo ${PROCESSNAME} '"$@"' >> run.sh \
+    && echo "./" ${PROCESSNAME} '"$@"' >> run.sh \
     && chmod +x run.sh
 ENTRYPOINT ["./run.sh"]
