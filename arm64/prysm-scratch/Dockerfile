@@ -21,4 +21,4 @@ WORKDIR /app
 RUN  echo "#!/usr/bin/env sh"  > run.sh \
     && echo ${PROCESSNAME} '"$@"' >> run.sh \
     && chmod +x run.sh
-ENTRYPOINT ["./beacon-chain"]
+ENTRYPOINT ["./run.sh"]
