@@ -10,7 +10,7 @@ RUN git clone --shallow-since ${HASHDATE} https://github.com/prysmaticlabs/prysm
     && rm -rf ./beacon-chain/db/kafka \
     && rm ./beacon-chain/db/db_kafka_wrapped.go \
     && go mod tidy \
-    && go install ./{PROCESSNAME}/...
+    && go install ./${PROCESSNAME}/...
 
 FROM alpine as dist
 ARG PROCESSNAME
