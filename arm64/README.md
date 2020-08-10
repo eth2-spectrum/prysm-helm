@@ -1,7 +1,7 @@
 Needs to be built for linux/arm64v8 when deploying to a raspberry pi.
 Experimental features (docker ce >=19.03) must be enabled to be able to perform this build.
 
-The following packages must be installed as well
+The following packages must be installed
 ```shell script
 sudo apt-get install -y qemu binfmt-support qemu-user-static
 ```
@@ -19,6 +19,14 @@ Please note that the target repository is hardcoded right now. Adjust according 
 cd prysm
 ./build_prysm.sh
 ```
+
+The following command builds a native arm64 binary of the desired prysm process from scratch.
+Please inspect the build script for possible customizations.
+```shell script
+cd prysm-scratch
+./build_prysm.sh
+```
+
 
 The following command build an arm64 image of the v.1.19.18 go ethereum client.
 ```shell script
