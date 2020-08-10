@@ -23,4 +23,5 @@ RUN  echo "#!/usr/bin/env sh"  > run.sh \
     && chmod +x run.sh \
     && chown app:app run.sh
 
+USER app
 ENTRYPOINT ["./run.sh"]
