@@ -20,11 +20,11 @@ cd prysm
 ./build_prysm.sh
 ```
 
-The following command builds a native arm64 binary of the desired prysm process from scratch.
+The following command builds and pushes a native arm64 binary of the desired prysm process from scratch.
 Please inspect the build script for possible customizations.
 ```shell script
 cd prysm-scratch
-./build_prysm.sh
+./build_prysm.sh {beacon-chain|validator|slasher}
 ```
 
 
