@@ -16,12 +16,7 @@ FROM alpine as dist
 ARG PROCESSNAME
 RUN addgroup -S app && adduser -S app -G app \
     && apk add --update libstdc++ libgcc
-COPY --chown=app:app --from=build /go/bin/${PROCESSNAME} /app/${PROCESSNAME}
+COPY --chown=app:app --from=build /go/bin/${PROCESSNAME} /app/prysmprocess
 WORKDIR /app
-RUN  echo "#!/usr/bin/env sh"  > run.sh \
-    && echo "./${PROCESSNAME}" '"$@"' >> run.sh \
-    && chmod +x run.sh \
-    && chown app:app run.sh
-
 USER app
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["./prysmprocess"]
