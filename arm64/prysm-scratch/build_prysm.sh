@@ -19,6 +19,7 @@ fi
 COMMITHASH=${COMMITHASH:-"0d118df0343bf0e268e9fb4f2d5eb60156519c11"}
 HASHDATE=${HASHDATE:-"2020-08-01"}
 VERSION_TAG=${VERSION_TAG:-"1.0.0-alpha.19"}
+DOCKER_REPOSITORY=${DOCKER_REPOSITORY:-"jbarthel/prysm-beacon-chain-arm64"}
 
 DOCKER_CLI_EXPERIMENTAL=enabled docker \
   buildx build --platform linux/arm64 \
@@ -26,7 +27,7 @@ DOCKER_CLI_EXPERIMENTAL=enabled docker \
   --build-arg COMMITHASH=${COMMITHASH} \
   --build-arg HASHDATE=${HASHDATE} \
   --build-arg PROCESSNAME=${PROCESSNAME} \
-  -t jbarthel/prysm-beacon-chain-arm64:${VERSION_TAG} \
+  -t ${DOCKER_REPOSITORY}:${VERSION_TAG} \
   -f Dockerfile \
   --push \
   .
