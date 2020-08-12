@@ -4,9 +4,9 @@ fullnameOverride: ""
 deployment:
   replicaCount: 1
   image:
-    repository: "jbarthel/prysm-node"
+    repository: "jbarthel/prysm-validator-arm64"
     pullPolicy: Always
-    tag: "latest-arm64"
+    tag: "v1.0.0-alpha.19"
 
   healthEndpoint: "/healthz"
   configDir: "/config"

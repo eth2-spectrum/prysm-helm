@@ -27,7 +27,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.beaconNode.deployment.image.repository }}:{{ .Values.beaconNode.deployment.image.tag }}
           args:
-            - "beacon-chain"
             - "--config-file={{ .Values.beaconNode.deployment.nodeConfigDir }}/{{ .Values.beaconNode.deployment.nodeConfigName }}"
           imagePullPolicy: {{ .Values.beaconNode.deployment.image.pullPolicy }}
           ports:

@@ -25,7 +25,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}
           args:
-            - "validator"
             - "--beacon-rpc-provider={{ .Values.deployment.beaconNode }}:4000"
             - "--wallet-dir={{ .Values.wallet.walletDirectory }}"
             - "--wallet-password-file={{ .Values.wallet.walletPasswordPath }}"
