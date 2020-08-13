@@ -9,9 +9,9 @@ beaconNode:
       runAsGroup: 101
       fsGroup: 101
     image:
-      repository: "jbarthel/prysm-beacon-chain-arm64"
+      repository: "eth2spectrum/prysm-beacon-chain-arm64"
       pullPolicy: Always
-      tag: "v1.0.0-alpha.19"
+      tag: "v1.0.0-alpha.20"
     nodeConfigDir: "/config"
     nodeConfigName: "beacon.yaml"
     dataDir: "/data"
