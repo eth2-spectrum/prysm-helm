@@ -6,4 +6,5 @@ metadata:
   {{- include "beacon-node.labels" . | nindent 4 }}
 data:
   beacon.yaml: |-
+    http-web3provider: "{{ .Values.beaconNode.web3HttpProvider }}"
 {{ .Files.Get "config/beacon.yaml" | indent 4 }}
