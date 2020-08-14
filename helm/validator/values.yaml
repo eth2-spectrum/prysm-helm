@@ -17,6 +17,7 @@ deployment:
 ports:
   metrics: 8080
 
+graffiti: ""
 wallet:
   keymanagerOptsFileName: "keymanageropts.json"
   accountsFilename: "all-accounts.keystore.json"

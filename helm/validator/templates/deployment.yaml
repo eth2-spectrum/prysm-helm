@@ -28,6 +28,7 @@ spec:
             - "--beacon-rpc-provider={{ .Values.deployment.beaconNode }}:4000"
             - "--wallet-dir={{ .Values.wallet.walletDirectory }}"
             - "--wallet-password-file={{ .Values.wallet.walletPasswordPath }}"
+            - "--graffiti={{ .Values.graffiti }}"
             - "--monitoring-host=0.0.0.0"
             - "--monitoring-port={{ .Values.ports.metrics }}"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
