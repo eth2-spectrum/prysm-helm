@@ -1,0 +1,54 @@
+nameOverride: ""
+fullnameOverride: ""
+
+prometheus:
+  validatorMetricsUrl: prysm-validator-metrics
+  beaconNodeMetricsUrl: medalla-prysm-beacon-node-metrics
+  defaultMetricsPort: 8080
+  persistentStorageSize: 5Gi
+  listenPort: 9090
+  dataPath: "/prometheus"
+  configPath: "/etc/prometheus"
+
+  deployment:
+    replicaCount: 1
+    podSecurityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+      fsGroup: 65534
+    image:
+      repository: "prom/prometheus"
+      pullPolicy: Always
+      tag: "latest"
+
+    healthEndpoint: "/healthz"
+    beaconNode: medalla-prysm-beacon-node-grcp
+
+grafana:
+  persistentStorageSize: 1Gi
+  listenPort: 3000
+  deployment:
+    podSecurityContext:
+      runAsUser: 472
+      runAsGroup: 472
+      fsGroup: 472
+    replicaCount: 1
+    image:
+      repository: grafana/grafana
+      tag: latest
+      pullPolicy: Always
+    dataPath: "/var/lib/grafana"
+    datasourcesPath: "/etc/grafana/provisioning/datasources"
+    dashboardProvidersPath: "/etc/grafana/provisioning/dashboards"
+    dashboardsPath: "/var/lib/grafana/dashboards"
+    dashboardBaseURL: "https://raw.githubusercontent.com/GuillaumeMiralles/prysm-grafana-dashboard/master/"
+    dashboardFile: "less_10_validators.json"
+
+  ingress:
+    urlPath: "/"
+
+ports:
+  metrics: 8080
+
+volumeClaim:
+  storageClassName: microk8s-hostpath

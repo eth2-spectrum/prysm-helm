@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "monitoring.fullname" . }}-prometheus
+  labels:
+    {{- include "monitoring.prometheusLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.prometheus.deployment.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "monitoring.prometheusSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "monitoring.prometheusSelectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+      {{- toYaml .Values.prometheus.deployment.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: prometheus-data
+          persistentVolumeClaim:
+            claimName: {{ include "monitoring.fullname" . }}-prometheus
+        - name: prometheus-config
+          configMap:
+            name: {{ include "monitoring.fullname" . }}-prometheus
+      containers:
+        - name: {{ include "monitoring.fullname" . }}-prometheus
+          image: {{ .Values.prometheus.deployment.image.repository }}:{{ .Values.prometheus.deployment.image.tag }}
+          imagePullPolicy: {{ .Values.prometheus.deployment.image.pullPolicy }}
+          args:
+          - --config.file={{ .Values.prometheus.configPath }}/prometheus.yml
+          - --storage.tsdb.retention.time=31d
+          ports:
+            - name: prometheus
+              containerPort: {{ .Values.prometheus.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: {{ .Values.prometheus.dataPath }}
+              name: prometheus-data
+            - mountPath: {{ .Values.prometheus.configPath }}
+              name: prometheus-config

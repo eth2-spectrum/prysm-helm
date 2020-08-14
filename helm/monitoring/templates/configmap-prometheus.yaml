@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "monitoring.fullname" . }}-prometheus
+  labels:
+    {{- include "monitoring.prometheusLabels" . | nindent 4 }}
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval:     15s 
+      evaluation_interval: 15s
+    alerting:
+      alertmanagers:
+      - static_configs:
+        - targets:
+    rule_files:
+    scrape_configs:
+      - job_name: 'validator'
+        static_configs:
+          - targets: ["{{ .Values.prometheus.validatorMetricsUrl }}:{{ .Values.prometheus.defaultMetricsPort }}"]
+      - job_name: 'beacon node'
+        static_configs:
+          - targets: ["{{ .Values.prometheus.beaconNodeMetricsUrl }}:{{ .Values.prometheus.defaultMetricsPort }}"]

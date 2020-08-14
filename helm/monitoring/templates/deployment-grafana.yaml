@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "monitoring.fullname" . }}-grafana
+  labels:
+    {{- include "monitoring.grafanaLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.grafana.deployment.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "monitoring.grafanaSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "monitoring.grafanaSelectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.grafana.deployment.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: grafana-data
+          persistentVolumeClaim:
+            claimName: {{ include "monitoring.fullname" . }}-grafana
+        - name: grafana-datasources-config
+          configMap:
+            name: {{ include "monitoring.fullname" . }}-grafana-datasources
+        - name: grafana-dashboard-config
+          configMap:
+            name: {{ include "monitoring.fullname" . }}-grafana-dashboards
+      initContainers:
+        - name: "{{ include "monitoring.fullname" . }}-grafana-init"
+          securityContext:
+            runAsUser: 0
+          image: "{{ .Values.grafana.deployment.image.repository }}"
+          imagePullPolicy: {{ .Values.grafana.deployment.image.pullPolicy }}
+          command: 
+          - bash
+          args:
+          - -c
+          - "mkdir -p {{ .Values.grafana.deployment.dashboardsPath }} ; wget {{ .Values.grafana.deployment.dashboardBaseURL }}/{{ .Values.grafana.deployment.dashboardFile }} -O {{ .Values.grafana.deployment.dashboardsPath }}/{{ .Values.grafana.deployment.dashboardFile }} ; chown -R grafana:grafana {{ .Values.grafana.deployment.dataPath }}"
+          volumeMounts:
+            - mountPath: {{ .Values.grafana.deployment.dataPath }}
+              name: grafana-data
+      containers:
+        - name: {{ include "monitoring.fullname" . }}-grafana
+          image: {{ .Values.grafana.deployment.image.repository }}:{{ .Values.grafana.deployment.image.tag }}
+          imagePullPolicy: {{ .Values.grafana.deployment.image.pullPolicy }}
+          ports:
+            - name: grafana
+              containerPort: {{ .Values.grafana.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: {{ .Values.grafana.deployment.dataPath }}
+              name: grafana-data
+            - mountPath: {{ .Values.grafana.deployment.datasourcesPath }}
+              name: grafana-datasources-config
+            - mountPath: {{ .Values.grafana.deployment.dashboardProvidersPath }}
+              name: grafana-dashboard-config

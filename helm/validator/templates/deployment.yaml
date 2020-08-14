@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "validator.fullname" . }}
+  labels:
+  {{- include "validator.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "validator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+    {{- include "validator.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+        - name: wallet-password
+          secret:
+            secretName: {{ include "validator.fullname" . }}
+        - name: wallet-accounts
+          configMap:
+            name: {{ include "validator.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}
+          args:
+            - "--beacon-rpc-provider={{ .Values.deployment.beaconNode }}:4000"
+            - "--wallet-dir={{ .Values.wallet.walletDirectory }}"
+            - "--wallet-password-file={{ .Values.wallet.walletPasswordPath }}"
+            - "--graffiti={{ .Values.graffiti }}"
+            - "--monitoring-host=0.0.0.0"
+            - "--monitoring-port={{ .Values.ports.metrics }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          volumeMounts:
+            - name: wallet-accounts
+              mountPath: "{{ .Values.wallet.walletDirectory }}/direct/{{ .Values.wallet.keymanagerOptsFileName }}"
+              subPath: "{{ .Values.wallet.keymanagerOptsFileName }}"
+            - name: wallet-accounts
+              mountPath: "{{ .Values.wallet.walletDirectory }}/direct/accounts/{{ .Values.wallet.accountsFilename }}"
+              subPath: "{{ .Values.wallet.accountsFilename }}"
+            - name: wallet-password
+              mountPath: {{ .Values.wallet.walletPasswordPath }}
+              subPath: {{ .Values.wallet.walletSecretSubPath}}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployment.healthEndpoint }}
+              port: {{ .Values.ports.metrics }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.deployment.healthEndpoint }}
+              port: {{ .Values.ports.metrics }}

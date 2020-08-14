@@ -1,0 +1,27 @@
+nameOverride: ""
+fullnameOverride: ""
+
+deployment:
+  replicaCount: 1
+  image:
+    repository: "eth2spectrum/prysm-validator-arm64"
+    pullPolicy: Always
+    tag: "v1.0.0-alpha.20"
+
+  healthEndpoint: "/healthz"
+  configDir: "/config"
+  configName: "validator.yaml"
+
+  beaconNode: medalla-prysm-beacon-node-grcp
+
+ports:
+  metrics: 8080
+
+graffiti: ""
+wallet:
+  keymanagerOptsFileName: "keymanageropts.json"
+  accountsFilename: "all-accounts.keystore.json"
+  walletDirectory: "/wallet"
+  walletPassword: "<pass-as-parameter>"
+  walletPasswordPath: "/wallet/wallet-password"
+  walletSecretSubPath: "wallet-password"

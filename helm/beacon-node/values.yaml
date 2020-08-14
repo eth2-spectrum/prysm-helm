@@ -1,0 +1,43 @@
+nameOverride: ""
+fullnameOverride: ""
+
+beaconNode:
+  web3HttpProvider: "https://goerli.prylabs.net"
+  deployment:
+    replicaCount: 1
+    podSecurityContext:
+      runAsUser: 101
+      runAsGroup: 101
+      fsGroup: 101
+    image:
+      repository: "eth2spectrum/prysm-beacon-chain-arm64"
+      pullPolicy: Always
+      tag: "v1.0.0-alpha.20"
+    nodeConfigDir: "/config"
+    nodeConfigName: "beacon.yaml"
+    dataDir: "/data"
+
+stats:
+  deployment:
+    replicaCount: 1
+    image:
+      repository: "alethio/eth2stats-client"
+      pullPolicy: Always
+      tag: "latest"
+    eth2StatsAddr: "grpc.medalla.eth2stats.io:443"
+    eth2StatsTLS: "true"
+    name: "stats-node"
+    beaconType: "prysm"
+    nodeName: "withte.eth"
+    dataPath: "/data"
+  persistentVolume:
+    size: 5Gi
+
+ports:
+  p2pTcp: 13000
+  p2pUdp: 12000
+  grpc: 4000
+  metrics: 8080
+
+storageClassName: microk8s-hostpath
+serviceType: ClusterIP

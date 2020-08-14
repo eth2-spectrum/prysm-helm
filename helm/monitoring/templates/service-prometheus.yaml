@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "monitoring.fullname" . }}-prometheus
+  labels: {{- include "monitoring.prometheusLabels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.prometheus.listenPort }}
+      targetPort: {{ .Values.prometheus.listenPort }}
+      protocol: TCP
+      name: prometheus
+  selector:
+    {{- include "monitoring.prometheusSelectorLabels" . | nindent 4 }}

@@ -1,0 +1,3 @@
+.idea/
+helm/validator/config/wallet
+arm64/ethnode/tmp
