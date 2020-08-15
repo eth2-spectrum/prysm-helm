@@ -12,7 +12,7 @@ deployment:
   configDir: "/config"
   configName: "validator.yaml"
 
-  beaconNode: medalla-prysm-beacon-node-grcp
+  beaconNode: beacon-node-grcp
 
 ports:
   metrics: 8080

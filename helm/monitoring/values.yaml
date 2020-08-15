@@ -3,7 +3,7 @@ fullnameOverride: ""
 
 prometheus:
   validatorMetricsUrl: validator-metrics
-  beaconNodeMetricsUrl: medalla-prysm-beacon-node-metrics
+  beaconNodeMetricsUrl: beacon-node-metrics
   defaultMetricsPort: 8080
   persistentStorageSize: 5Gi
   listenPort: 9090
@@ -22,7 +22,7 @@ prometheus:
       tag: "latest"
 
     healthEndpoint: "/healthz"
-    beaconNode: medalla-prysm-beacon-node-grcp
+    beaconNode: beacon-node-grcp
 
 grafana:
   persistentStorageSize: 1Gi
