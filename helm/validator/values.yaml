@@ -6,7 +6,7 @@ deployment:
   image:
     repository: "eth2spectrum/prysm-validator-arm64"
     pullPolicy: Always
-    tag: "v1.0.0-alpha.21"
+    tag: "v1.0.0-alpha.22"
 
   healthEndpoint: "/healthz"
   configDir: "/config"
