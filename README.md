@@ -12,7 +12,7 @@ You also need to pass wallet password value override to the helm deployment. Con
 
 deploy the helm charts as such:
 ```shell script
-$ helm upgrade --debug -i beacon-node ./beacon-node
+$ helm upgrade -i beacon-node ./beacon-node
 $ helm upgrade -i validator --set walletPassword=$(cat <path-to-my-pw-file>) ./validator
 $ helm upgrade -i --debug monitoring ./monitoring
 ```
