@@ -12,7 +12,7 @@ beaconNode:
     image:
       repository: "eth2spectrum/prysm-beacon-chain-arm64"
       pullPolicy: Always
-      tag: "v1.0.0-alpha.22"
+      tag: "v1.0.0-alpha.23"
     nodeConfigDir: "/config"
     nodeConfigName: "beacon.yaml"
     dataDir: "/data"
