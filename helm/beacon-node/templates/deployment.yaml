@@ -46,11 +46,3 @@ spec:
           - name: configfile
             mountPath: {{ .Values.beaconNode.deployment.nodeConfigDir }}
             readOnly: true
-{{/*          livenessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /metrics*/}}
-{{/*              port: metrics*/}}
-{{/*          readinessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /metrics*/}}
-{{/*              port: metrics*/}}
