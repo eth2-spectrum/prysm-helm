@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: udp-services
+  namespace: ingress
+data:
+  12000: "medalla-prysm/beacon-node-udp:12000"
