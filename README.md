@@ -17,4 +17,7 @@ $ helm upgrade -i validator --set walletPassword=$(cat <path-to-my-pw-file>) ./v
 $ helm upgrade -i --debug monitoring ./monitoring
 ```
 
+Please note that for a fully functioning beacon node, it is necessary to route the traffic from ports 13000/tcp and 12000/udp to the beacon pod.
+An example solution can be found in the [microk8s folder](microk8s).
+
 issues and pull requests are very welcome!
