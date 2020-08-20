@@ -39,11 +39,11 @@ $ kubectl apply -n ingress -f ./ingress-udp-services-configmap.yaml
 
 Further, the default implementation of the microk8s ingress controller daemonset is not parameterized with the created
 configmaps. In the example below, the highlighted lines have to be added:
-```shell script
-$ kubectl describe -n ingress daemonsets.apps nginx-ingress-microk8s-controller                                                                                                                     [±master ●●]
+<pre><code>
+$ kubectl describe -n ingress daemonsets.apps nginx-ingress-microk8s-controller
 Name:           nginx-ingress-microk8s-controller
 Selector:       name=nginx-ingress-microk8s
-Node-Selector:  <none>
+Node-Selector:  &lt;none&gt;
 Labels:         microk8s-application=nginx-ingress-microk8s
 Annotations:    deprecated.daemonset.template.generation: 3
                 kubectl.kubernetes.io/last-applied-configuration:
@@ -72,13 +72,13 @@ Pod Template:
     Environment:
       POD_NAME:        (v1:metadata.name)
       POD_NAMESPACE:   (v1:metadata.namespace)
-    Mounts:           <none>
-  Volumes:            <none>
+    Mounts:           &lt;none&gt;
+  Volumes:            &lt;none&gt;
 Events:
   Type    Reason            Age   From                  Message
   ----    ------            ----  ----                  -------
   Normal  SuccessfulCreate  29m   daemonset-controller  Created pod: nginx-ingress-microk8s-controller-8t9p9
-```
+</code></pre>
 
 We therefore have to edit the daemonset, i.e. with the following command:
 ```shell script
