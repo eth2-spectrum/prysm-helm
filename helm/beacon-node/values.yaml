@@ -3,6 +3,7 @@ fullnameOverride: ""
 
 beaconNode:
   web3HttpProvider: "https://goerli.prylabs.net"
+  p2pHostDns: ""
   deployment:
     replicaCount: 1
     podSecurityContext:
